@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <title>Pets</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="nav-bar">
+      <h2>Find a Friend</h2>
+      <div>
+        <a href="/auth/login" class="btn btn-xl"><span class="fa fa-user"></span> Login staff</a>
+        <a href="/auth/signup" class="btn btn-xl"><span class="fa fa-user"></span> Staff Signup</a>
+    </div>
+    </nav>
+  </header>
+  <main>
+    <section class="container-headline">
+      <section class="container-title">
+          <h1>A friend that is waiting for you</h1>
+      </section>
+    </section>
+    <div><h2>Meet our friends<h2></div>
+    <section class="container">
+      <% if (pets.length === 0) { %>
+        alert(There is no pets for adoption right now)
+      <% }else{ %>
+      <% pets.forEach(pet => { %>        
+        <section class="card">
+          <img src="img/dogi.jpg" alt="pets picture" id="img-pet">
+          <section class="pet-infrormation">
+            <strong class="pet-name"><%= pet.name %></strong>
+            <h4><%= pet.type %></h4>
+            <h4><%= pet.breed %></h4>
+            <h4><%= pet.age %> years</h4>
+            <h4><%= pet.sex %></h4>
+          </section>
+          <button type="button" class="btn btn-warning btn-lg">I want to Adopt</button>
+        </section>
+      <% }) %>
+      <% } %>
+    </section>
+  </main>
+  <footer>
+      <h3>Find a Friend</h3>
+      <h2>A thoughtful path to a new beginnig</h2>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+    <title>Pets</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+  <header>
+    <nav class="nav-bar">
+      <h2>Find a Friend</h2>
+      <a href="/logout" class="btn btn-xl">Logout</a>
+    </nav>
+  </header>
+  <section class="container"> 
+    <section class="row">
+      <!-- LOCAL INFORMATION -->
+      <section class="col-sm-12">
+        <section class="well">
+          <h3><span class="fa fa-user"></span> Welcome!</h3>
+          <h2>
+          <strong><%= data.name %></strong>
+          </h2>
+          <a href="/unlink/local" class="btn btn-default">Unlink</a>
+          <a href="/connect/local" class="btn btn-default">Connect Local</a>
+        </section>
+      </section>
+    </section>
+  
+    <section class="profile-header text-left">
+      <section>
+        <h1>Manage pets</h1>
+        <p>Keep every profile ready for a thoughtful introduction</p>
+      </section>
+      <button type="submit" class="btn btn-success btn-lg btn-newPet"><span class="fa fa-plus"></span> New Pet</button>   
+    </section>
+  
+    <dialog id="dialog-new-pet">
+        <h2>New pet</h2>
+            <form class="form-dialog-new-pet">
+              <input type="text" placeholder="Rocky" name="name" class="input-pet"><br>
+              <label for="pet-select">Choose the type:</label>
+              <select name="type" id="pet-type" class="input-pet">
+                  <option value="">--Please choose an option--</option>
+                  <option value="Dog">Dog</option>
+                  <option value="Cat">Cat</option>
+                  <option value="Hamster">Hamster</option>
+                  <option value="Parrot">Parrot</option>
+                  <option value="Spider">Spider</option>
+                  <option value="Goldfish">Goldfish</option>
+              </select>
+              <input type="text" placeholder="Chihuahua" name="breed" class="input-pet">
+              <input type="number" placeholder="2" name="age" class="input-pet">
+              <label for="pet-select">Choose the sex:</label>
+              <select name="sex" id="pet-sex" class="input-pet">
+                  <option value="">--Please choose an option--</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+              </select>
+              <div class="btns-dialog">
+                <button type="submit" id="btn-submit-pet" class="btn btn-success btn-m">Submit</button>
+                <button type="submit" id="btn-close" class="btn btn-danger btn-m">close</button>
+              </div>
+            </form>
+    </dialog>
+  <dialog id="dialog-edit-pet">
+      <h2>Update pet</h2>
+          <form class="form-dialog-edit-pet">
+            <input type="text" placeholder="Rocky" name="name" class="input-pet"><br>
+            <label for="pet-select">Choose the type:</label>
+            <select name="type" id="pet-type" class="input-pet">
+                <option value="">--Please choose an option--</option>
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Hamster">Hamster</option>
+                <option value="Parrot">Parrot</option>
+                <option value="Spider">Spider</option>
+                <option value="Goldfish">Goldfish</option>
+            </select>
+            <input type="text" placeholder="Chihuahua" name="breed" class="input-pet">
+            <input type="number" placeholder="2" name="age" class="input-pet">
+            <label for="pet-select">Choose the sex:</label>
+            <select name="sex" id="pet-sex" class="input-pet">
+                <option value="">--Please choose an option--</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </select>
+            <div class="btns-dialog">
+              <button type="submit" id="btn-submit-pet" class="btn btn-success btn-m">Submit</button>
+              <button type="submit" id="btn-close" class="btn btn-danger btn-m">close</button>
+            </div>
+          </form>
+  </dialog>
+  <table>
+    <tr class="table-headings">
+      <th>Name</th>
+      <th>Type</th>
+      <th>Breed</th>
+      <th>Age</th>
+      <th>Sex</th>
+      <th>Description</th>
+      <th>Adopt</th>
+      <th>Actions</th>
+    </tr>
+    <% if (mascotas.length === 0) { %>
+    <tr class="table-body">
+      <td>There is no pets for adoption right now =(</td>
+    <% }else{ %>
+    <% mascotas.forEach(pet => { %>    
+      <td><%= pet.name %></td>
+      <td><%= pet.type %></td>
+      <td><%= pet.breed %></td>
+      <td><%= pet.age %></td>
+      <td><%= pet.sex %></td>
+      <td><%= pet.description %></td>
+      <td><span class="chip"><%= pet.adopt %></span></td>
+      <td><button type="submit" class="btn btn-warning btn-m btn-edit" data-id="<%= pet._id %>"><span class="fa fa-plus"></span> Edit</button></td>
+      <td><button type="submit" class="btn btn-danger btn-m btn-delete" data-id="<%= pet._id %>"><span class="fa fa-plus"></span> Delete</button></td>
+      </tr>
+    <% }) %>
+    <% } %>
+  </table>
+  <section class="col-sm-6">
+    <h2>Add new pet</h2>
+    <form action="/pets" method="POST" class="new-pet-form">
+      <input type="text" placeholder="Rocky" name="name" class="input-pet"><br>
+      <label for="pet-select">Choose a type</label>
+      <select name="type" id="pet-type" class="input-pet">
+        <option value="">--Please choose an option--</option>
+        <option value="Dog">Dog</option>
+        <option value="Cat">Cat</option>
+        <option value="Hamster">Hamster</option>
+        <option value="Parrot">Parrot</option>
+        <option value="Spider">Spider</option>
+        <option value="Goldfish">Goldfish</option>
+      </select>
+      <input type="text" placeholder="Chihuahua" class="input-pet" name="breed">
+      <input type="number" placeholder="2" name="age" class="input-pet">
+      <select name="sex" id="pet-sex" class="input-pet">
+        <option value="">--Please choose an option--</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+      </select>
+      <button type="submit" class="btn btn-success btn-m">Submit</button>
+      </form>
+  </section>
+  </section>
+  
+<script src="/js/profile.js"></script>
+
+</body>
+</html>

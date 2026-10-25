@@ -11,7 +11,7 @@ route.get('/:id', petController.getOne);
 
 route.put('/',petController.update);
 
-route.put('/:id', verificarToken , petController.update);
+route.put('/:id', petController.update);
 
 route.delete('/:id', verificarToken, petController.delete);
 

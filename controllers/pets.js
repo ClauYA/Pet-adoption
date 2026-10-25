@@ -1,17 +1,32 @@
 import petsModel from '../models/pets.js'
-
-
-class petsController{
+//cambiar esto por una mejor API que busque a todos los animale
+//aca manda la imagen random de perros 
+async function randomDogImage() {
+        try {
+            const res = await fetch('https://dog.ceo/api/breeds/image/random', {
+            signal: AbortSignal.timeout(4000)
+            })
+            if (!res.ok) return null
+            const data = await res.json()
+            return data.status === 'success' ? data.message : null
+            } catch {
+                return null
+        }
+    }
+    
+    class petsController{
     constructor(){
 
     }
-
+   
     async create(req,res){
         try{
-            const data = await petsModel.create(req.body);
+            const pet = { ...req.body }
+            pet.image = await randomDogImage() || '/public/img/dogi.jpg'
+            const data = await petsModel.create(pet);
             res.status(201).json(data);
         }catch(e){
-            res.status(500).send(e);
+            res.status(500).json({ error: e.message });
         }
     }
 
@@ -19,10 +34,11 @@ class petsController{
         try{
             const {id} = req.params;
             const data = await petsModel.update(id, req.body)
+            if (!data) return res.status(404).json({ error: 'Pet not found' })
             res.status(200).json(data);
             
         }catch(e){
-            res.status(500).send(e);
+            res.status(500).json({ error: e.message });
         }
     }
 
@@ -32,7 +48,7 @@ class petsController{
             const data = await petsModel.getOne(id)
             res.status(200).json(data);
         }catch(e){
-            res.status(500).send(e);
+            res.status(500).json({ error: e.message });
         }
     }
 
@@ -43,7 +59,7 @@ class petsController{
             res.status(200).json(data);
            
         }catch(e){
-            res.status(500).send(e.message);
+            res.status(500).json({ error: e.message });
         }
     }
 
@@ -54,7 +70,7 @@ class petsController{
           
             res.status(200).json(data);
         }catch(e){
-            res.status(500).send(e);
+            res.status(500).json({ error: e.message });
         }
     }
 }

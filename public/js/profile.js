@@ -1,49 +1,10 @@
-const formulario = document.querySelector('.new-pet-form');
+const formulario = document.querySelector('.formulario');
 const mensaje = document.querySelector("#message")
 const btnDelete = document.querySelectorAll('.btn-delete');
-const newPet = document.querySelector('.btn-newPet');
-const dialogPet = document.querySelector('#dialog-new-pet');
-const btnCloseDialog = document.querySelector("#btn-close");
 const dialogEditPet = document.querySelector('#dialog-edit-pet');
-const dialogoFormNewPet = document.querySelector('.form-dialog-new-pet');
-const dialogoFormEditPet = document.querySelector('.form-dialog-edit-pet');
+const dialogoFormEditPet = document.querySelector('#form-dialog-edit-pet');
 const btnCloseDialogEdit = document.querySelector("#btn-edit-close");
-//configuracion para mostrar el cuadro de dialogo para agregar una 
-//nueva mascota
-newPet.addEventListener('click', () =>{
-    dialogPet.showModal();
-})
-//close the dialog
-btnCloseDialog.addEventListener('click', () =>{
-    dialogoFormNewPet.reset();
-    dialogPet.close();
-})
-
-dialogoFormNewPet.addEventListener('submit', async (e) =>{
-    //Al hacer clic en el boton submit del form, el navegador 
-    // envía los datos al servidor y recarga la página.
-    e.preventDefault()
-    //convierte el fomrulario en {email, name, phone, password}
-    const obtenerDatos = Object.fromEntries(new FormData(dialogoFormNewPet));
-        try {
-        //el fetch se arma con dos piezas q tenemos uno en el servidor /users y en routes/users.js post /registro
-        const res = await fetch('/pets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(obtenerDatos)
-        })
-        const data = await res.json()
-
-        if (!res.ok) {
-        mensaje.textContent = data.error || "Couldn't save pet"
-        return
-        }
-        formulario.reset();
-        window.location.reload();
-    } catch (err) {
-        mensaje.textContent = 'Error de conexión'
-    }
-})
+const btnEditPet = document.querySelector('.btn-edit');
 
 formulario.addEventListener('submit', async (e) =>{
     //Al hacer clic en el boton submit del form, el navegador 
@@ -51,6 +12,7 @@ formulario.addEventListener('submit', async (e) =>{
     e.preventDefault()
     //convierte el fomrulario en {email, name, phone, password}
     const obtenerDatos = Object.fromEntries(new FormData(formulario));
+    obtenerDatos.age = Number(obtenerDatos.age);
         try {
         //el fetch se arma con dos piezas q tenemos uno en el servidor /users y en routes/users.js post /registro
         const res = await fetch('/pets', {
@@ -72,33 +34,44 @@ formulario.addEventListener('submit', async (e) =>{
 })
 
 //Editarrrr
-document.querySelectorAll('.btn-edit').forEach( boton =>{
-  boton.addEventListener('click', () => 
-    editPet(boton.dataset.id))
-})
+Array.from(btnEditPet).forEach(function(element){
+  element.addEventListener('click', function(){
+    const obj = element.closest('tr').children;
+    dialogoFormEditPet.elements.itemId.value = element.dataset.id;
+    dialogoFormEditPet.elements.name.value  = obj[0].textContent.trim();
+    dialogoFormEditPet.elements.type.value = obj[1].textContent.trim();
+    dialogoFormEditPet.elements.breed.value = obj[2].textContent.trim();
+    dialogoFormEditPet.elements.age.value = obj[3].textContent.trim();
+    dialogoFormEditPet.elements.sex.value = obj[4].textContent.trim();
+    dialogoFormEditPet.elements.description.value = obj[5].textContent.trim();
+    dialogoFormEditPet.elements.adopt.value = obj[6].textContent.trim();
+    dialogEditPet.showModal();
+  })
+});
+//este es mi boton para la cancelacion del update en el cuadro de dialogo
+document.getElementById('edit-cancel').addEventListener('click', () => 
+  dialog.close());
 
-async function editPet(id) { 
+dialogoFormEditPet.addEventListener('submit', async function (e) {
+  e.preventDefault()
+  const data = Object.fromEntries(new FormData(dialogoFormEditPet))
+  const id = data.itemId
+  delete data.itemId
+  data.age = Number(data.age)
+
   try {
-    const res = await fetch(`/pets/${id}`)
-    if (!res.ok) {
-      alert('no cargaaaaa!')
-      return
-    }
-    const pet = await res.json();
-    dialogoFormEditPet.elements.id.value = pet._id;
-    dialogoFormEditPet.elements.name.value = pet.name;
-    dialogoFormEditPet.elements.type.value = pet.type;
-    dialogoFormEditPet.elements.breed.value = pet.breed;
-    dialogoFormEditPet.elements.age.value = pet.age;
-    dialogoFormEditPet.elements.sex.value = pet.sex;
-
-    dialogEditPet.showModal()
+    const respuesta = await fetch(`/pets/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    if (!respuesta.ok) throw new Error("Couldn't update")
+    window.location.reload()
   } catch (err) {
-    alert('Connection error', err.message)
+    console.error(err.message)
+    alert(err.message)
   }
-}
-
-
+})
 
 //necesito recuperar el token 
 const token = localStorage.getItem('token')

@@ -29,6 +29,10 @@ const petSchema =  new mongoose.Schema({
     adopt : {
         type: Boolean,
         default: false
+    },
+    image:{
+        type: String,
+        default: '/public/img/dogi.jpg'
     }
 }, { timestamps : true }
 );

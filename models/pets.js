@@ -11,7 +11,7 @@ class petsModel{
     }
 
     async update(id, mascota){
-        return await Pet.findOneAndUpdate({_id: new mongoose.Types.ObjectId(id)}, mascota);
+        return await Pet.findOneAndUpdate(id, mascota, { new:true, runValidators:true });
     }
 
     async delete(id){
@@ -24,7 +24,7 @@ class petsModel{
     }
 
     async getOne(id){
-        return await Pet.findById();
+        return await Pet.findById(id);
     }
 
 }

@@ -9,39 +9,68 @@
 <body>
   <header>
     <nav class="nav-bar">
-      <h2>Find a Friend</h2>
+      <div class="logo-title">
+                    <img src="img/logo.png" alt="logo find a friend">
+                    <h3 class="title">Find your friend</h3>
+                </div>
       <div>
-        <a href="/auth/login" class="btn btn-xl"><span class="fa fa-user"></span> Login staff</a>
-        <a href="/auth/signup" class="btn btn-xl"><span class="fa fa-user"></span> Staff Signup</a>
+        <a href="/auth/login" class="btn btn-xl btn-nav"><span class="fa fa-user"></span> Login staff</a>
+        <a href="/auth/signup" class="btn btn-xl btn-nav"><span class="fa fa-user"></span> Staff Signup</a>
     </div>
     </nav>
   </header>
   <main>
     <section class="container-headline">
+        <span>A LITTLE HELLO... A WHOLE NEW CHAPTER</span>
       <section class="container-title">
           <h1>A friend that is waiting for you</h1>
       </section>
+      <h4>Big personalities, small paws, and room for a new beginning.</h4>
     </section>
-    <div><h2>Meet our friends<h2></div>
-    <section class="container">
-      <% if (pets.length === 0) { %>
-        alert(There is no pets for adoption right now)
-      <% }else{ %>
-      <% pets.forEach(pet => { %>        
-        <section class="card">
-          <img src="img/dogi.jpg" alt="pets picture" id="img-pet">
-          <section class="pet-infrormation">
-            <strong class="pet-name"><%= pet.name %></strong>
-            <h4><%= pet.type %></h4>
-            <h4><%= pet.breed %></h4>
-            <h4><%= pet.age %> years</h4>
-            <h4><%= pet.sex %></h4>
+    <section class="container-filter">
+      <div class="search">
+        <label>Search pets (optional)</label>
+        <input type="text" placeholder="Search by breed" name="description" class="input-search">
+      </div>
+      <button type="submit" class="btn-primary"><span class="fa fa-search">Search</button>
+    </section>
+    <section class="container-all-pets">
+      <div>
+        <h3>Meet our friends<h3>
+      </div>
+      <% const fotos = {
+        Dog: 'dogi.jpg',
+        Cat: 'cat.jpg',
+        Hamster: 'hamster.jpg',
+        Parrot: 'parrot.jpg',
+        Spider: 'spider.jpg',
+        Goldfish: 'fish.jpg'
+      } %>
+      <section class="container">
+        <% if (pets.length === 0) { %>
+          alert(There is no pets for adoption right now)
+        <% }else{ %>
+        <% pets.forEach(pet => { %>        
+          <section class="card">
+            <img class="img-pet"
+             src="/img/<%= fotos[pet.type] || 'dogi.jpg' %>"
+             alt="<%= pet.type %> picture">
+            <section class="pet-information">
+              <h4 class="pet-type"><%= pet.type %></h4>
+              <strong class="pet-name"><%= pet.name %></strong>
+              <h4><span>Breed: </span><%= pet.breed %></h4>
+              <h4><span>Age: </span><%= pet.age %> years</h4>
+              <h4><%= pet.sex %></h4>
+            </section>
+            <div class="container-btn">
+              <button type="button" class="btn btn-primary btn-lg">I want to Adopt</button>
+            </div>
           </section>
-          <button type="button" class="btn btn-warning btn-lg">I want to Adopt</button>
-        </section>
-      <% }) %>
-      <% } %>
+        <% }) %>
+        <% } %>
+      </section>
     </section>
+      
   </main>
   <footer>
       <h3>Find a Friend</h3>

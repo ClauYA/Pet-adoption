@@ -52,6 +52,8 @@ Never commit the `.env` file. Make sure it is listed in `.gitignore`.
  
 ```bash
 node app.js
+
+Open http://localhost:5100
 ```
 ## What I learned
  
@@ -60,4 +62,11 @@ node app.js
 - Protecting routes with token-based middleware
 - Connecting a frontend to an API with `fetch` and handling errors 
 
+## Security
+ 
+This app has **no authentication**: anyone with the URL can create, edit or delete recipes. That is fine for a local practice project or a demo, but it should be addressed before storing real data. Below is what is in place and what is recommended.
+
+
 ## Deployment
+
+https://pet-adoption-i1ij.onrender.com/

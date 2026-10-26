@@ -133,6 +133,20 @@ main{
 .btn-primary:hover{ 
   background: #502983; 
 }
+.btn-custom{
+  display: flex;
+  min-height: 46px;
+  padding: 12px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.00);
+  background: #5c4988;
+}
+.btn-custom:hover{ 
+  background: #502983; 
+}
 div{
   padding: 0px 16px;
 }
@@ -187,14 +201,13 @@ div{
   font-weight: 600;
   margin: 0;
 }
+
 .pet-type{
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: #5c4988;
-  font
-  
 }
 .card .btn{
   width: 100%;
